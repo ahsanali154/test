@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th , td  {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd)	{
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+</style>
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-app="" ng-controller="customersController"> 
+<table>
+    <th>NAME</th>
+     <th>ACCOUNT</th>
+    <th>Username</th>
+  <tr ng-repeat="x in names">
+      
+    <td>{{ x.Email }}</td>
+    <td>{{ x.account }}</td>
+    <td>{{ x.Username }}</td>
+  </tr>
+  
+</table>
+    
+</div>
+
+    
+<script>
+function customersController($scope,$http) {
+  $http.get("http://localhost/angular/Customers_mysql.php")
+  .success(function(response) {
+//               alert(JSON.stringify(response));
+               $scope.names = response;
+              
+                var data;  
+                data  = $scope.names;
+                for(i=0;i<=data.length;i++){         
+                       
+                        d = data[i]['Email'];
+                        dd = d.split('@');
+                        
+                    $scope.names[i]['Email'] = dd[0];
+                    $scope.names[i]['account'] = dd[1];
+                }     
+ 
+    })
+  .error(function(response) {alert('ERROR')});
+   
+}
+</script>
+
+</body>
+</html>
